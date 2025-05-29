@@ -10,6 +10,7 @@
 
 	.code16gcc
 	.global printf
+        .global memory
 
 	.section .text
 	
@@ -18,7 +19,9 @@ printf:
 	mov   %cx, %bx
 	
         mov   $0x0e,%ah               
-        mov   $0x0, %si               
+        mov   $0x0, %si  
+
+
 loop:                                 
         mov   (%bx, %si), %al           
         cmp   $0x0, %al               
@@ -30,6 +33,8 @@ end:
         mov %si, %ax
         ret
 
+memory:
 
-
+        mov $0x12, %ax 
+        ret
 

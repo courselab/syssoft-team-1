@@ -1,0 +1,75 @@
+Para solução do exercício, foi adotado a solução sugerida pelo professor no README:
+
+    "For example, you can get the conventional memory size (int 0x12)..."
+    "...Tip: make your function return the value in %ax (as does gcc); then 
+    convert from integer to string in C."
+
+A primeira etapa foi entender o código e saber quais partes precisariam ser 
+alteradas para a função ser executada com sucesso.
+
+Em primeira análise, o entendimento foi o seguinte:
+
+    - A nova função deveria ser criada no arquivo libc.S 
+    - Ela deveria ser exportada, no começo do arquivo 
+    - O arquivo Header stdio.h deveria receber a inclusão dessa função 
+    - O arquivo C main.c deveria utilizar a função
+
+Seguindo essa análise, o primeiro teste foi o de utizar a função printf já criada
+para imprimir a partir de uma variável.
+
+Tendo sucesso nisso, o plano de desenvolvimento foi traçado:
+
+    - Adicionar no arquivo libc.S uma função que lesse o tamanho da memória(int 0x12)
+     e o retornasse em uma variável do tipo int
+    - Receber esse tamanho em uma variável do tipo int no código C
+    - Converter esse tamanho de memória de int para string (char *)
+    - Utilizar a função printf previamente implementada para imprimir o resultado na tela
+
+Para enviar o tamanho da memória para o código c, foi utilizado o registrador %ax, como foi
+sugerido pelo professor:
+
+    libc.S
+    memory:
+
+            mov $0x12, %ax 
+            ret
+
+Para o header, como não foi utilizado o registrador %cx para passar nenhuma, informação,
+essa foi a solução implementada:
+
+    stdio.h 
+    int __attribute__((naked)) memory(); 
+
+A função é do tipo int, pois o valor retornado é um inteiro
+
+Para converter esse inteiro para string, primeiro tivemos que inicializar as variáveis:
+
+    main.c 
+    int tamanho_memoria = memory();
+    char *tamanho_memoria_convertido = "";
+
+Após isso, foi chamado a função itoa, que converte um inteiro para ASCII
+Foi utilizada uma implementação simplificada da função:
+
+    main.c 
+    void itoa(int n, char s[])
+    {
+        int i, sign;
+
+        if ((sign = n) < 0)  /* record sign */
+            n = -n;          /* make n positive */
+        i = 0;
+        do {       /* generate digits in reverse order */
+            s[i++] = n % 10 + '0';   /* get next digit */
+        } while ((n /= 10) > 0);     /* delete it */
+        if (sign < 0)
+            s[i++] = '-';
+        s[i] = '\0';
+    }  
+
+Por fim, o que restou ser feio é chamar a função de printf, passando a string atualizada com
+o tamanho da memória convertido.
+
+    printf(tamanho_memoria_convertido);
+
+Não foi necessário realziar nenhuma alteração no MAKEFILE
