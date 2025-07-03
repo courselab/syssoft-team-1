@@ -1,0 +1,18 @@
+Exercício 01
+
+p1
+
+"	
+	Execute it a few times and explain the results.
+	Explain didactically what the rationale for this behaviour is
+									"
+
+Sempre que executamos o código, o endereço de memória printado da main é 
+o mesmo.
+Isso ocorre, pois, em sistemas ELF, o endereço de executáveis "normais" é 
+sempre o mesmo na hora da compilação. É possível, no entando, sobrescrever 
+esse endereço padrão utilizando o ASLR (Address Space Layout Randomization).
+
+
+
+Exercício 02
