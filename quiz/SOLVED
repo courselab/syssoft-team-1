@@ -1,4 +1,4 @@
-Exercício 01
+*Exercício 01*
 
 p1
 
@@ -7,12 +7,72 @@ p1
 	Explain didactically what the rationale for this behaviour is
 									"
 
-Sempre que executamos o código, o endereço de memória printado da main é 
-o mesmo.
-Isso ocorre, pois, em sistemas ELF, o endereço de executáveis "normais" é 
-sempre o mesmo na hora da compilação. É possível, no entando, sobrescrever 
-esse endereço padrão utilizando o ASLR (Address Space Layout Randomization).
+Sempre que executamos o código, o endereço de memória printado da main é o mesmo. Isso ocorre, 
+pois, em sistemas ELF, o endereço de executáveis "normais" é sempre o mesmo na hora da compilação. 
+É possível, no entando, sobrescrever esse endereço padrão utilizando o ASLR (Address Space Layout 
+Randomization).
+
+
+*Exercício 02*
+
+p2
+
+"
+	Understand how the program works
+						"
+
+O programa pede por uma senha, armazena o input do usuário em uma string de 10 caracteres, compara 
+essa string com "foo" e, se for igual, atualiza a flag "verified" para conceder acesso ao código 
+protegido. Caso seja diferente, ele encerra o programa com a mensagem de erro "Acesso negado".
+
+
+"
+	Then, rerun p2 and, when prompted, enter: youshallnotpass.
+	
+	Explain the result and identify the design flaw that led to the
+		vulnerability.
+										"
+
+Como resultado, tem-se que, ao fornecer a senha errada "youshallnotpass", o programa aceita ela 
+como verdadeira e fornece acesso ao código protegido. Isso acontece, pois, durante a etapa de 
+scanf, a senha fornecida estoura o limite de 10 caracteres da varíavel "user_key". Quando 
+"disassemblamos" esse código, podemos ver que o caracter excedente invade o espaço de memória da 
+flag "verified", que é utilizada para garantir o acesso ao código protegido.Como resultado, o 
+programa permite a entrada com senhas diferentes da orginal.Esse problema é conhecido como 
+bufferflow vulnerability.
+
+
+"
+	Let's say your compiler does not implement stack protection
+	    (shame on it). Discuss possible modifications in the source code
+	     to make the program more robust with regard to buffer overflow.
+										"
+
+Em primeiro lugar, é importante ressaltar que o "stack protector" é um mecanismo de defesa que 
+impede que esse tipo de erro aconteça. Para esse caso em específico, a solução é chamada de "stack 
+canary".
+
+Para fortalecer esse código, podem ser feitas algumas coisas. A primeira delas, é limitar o 
+tamanho do input do usuário durante a função scanf. Isso pode ser feito substituindo "%s" por 
+"%9s" ( 9 caracteres + \0 ). Outra coisa que pode ser feita é, ao invés de utilizar uma flag para 
+verificar o acesso, chamar uma função com o código protegido a partir da verificação. Dessa forma, 
+a string de 10 carcteres não deve ter overflow, e, mesmo que tenha, não existirá variável para ser 
+preenchida.
+
+
+"
+	Apply those modifications in a new program p2fix.c, and edit
+             the Makefile to build it (you can't use -fstack-protector).
+
+             Test the program and comment on the results.
+										"
+
+As alterações mencionadas previamente foram implementadas no código p2fix.c. Seus comandos de 
+compilação e clean foram adicionados no Makefile. Como esperado, ao tentar acessar o código com a 
+senha certa, ele autoriza sua entreda, e ao tentar usar a senha errada, ele bloqueia.
 
 
 
-Exercício 02
+*Exercício 03*
+
+p3
