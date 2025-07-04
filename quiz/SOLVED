@@ -76,3 +76,60 @@ senha certa, ele autoriza sua entreda, e ao tentar usar a senha errada, ele bloq
 *Exercício 03*
 
 p3
+
+
+
+
+*Exercício 05*
+
+dyn
+
+
+"
+	Explain the differences between
+
+                a) static library
+                b) dynamic library with relocatable code
+                c) dynamic library with position-independent-code
+									"
+
+a) Uma biblioteca estática é um grupo de objetos que são carregados e linkados a um programa 
+durante a compilação do mesmo. Dessa forma, eles se tornam apenas um executál, sem dependências 
+externas. Normalmente, eles vem nos formatos .lib, para windows, e .a, para linux.
+
+b) Uma bilioteca compartilhada, que precisa ser enxergada/estar na mesma pasta do código principal.
+Normalmente nos formatos .so e .dll.
+
+c) Uma biblioteca compartilhada que foi compilada com PIC (position-independent-code). Essa ferramenta
+flexibiliza a criação de códigos com dependência de bibliotecas, através da utilização de uma tabela
+para acessar as funções (Global Offset Table).
+
+"
+	What are the advantages and disadvantages of each one?
+									"
+
+a)
+	Vantagens:
+		- Excução mais rápida;
+		- Entrega (deployment) mais simples.
+	
+	Desvantagens:
+		- Executável maior;
+		- Mais complicado de atualizar(recompilação).
+
+b)
+	Vantagens:
+		- Executáveis menores;
+		- Facilidade de compartilhamento de código.
+
+	Desvantagens:
+		- Necessidade das localizações fixas das libs;
+		- Repercussões de segurança (endereços fixos).
+
+c)
+	Vantagens:
+		- Melhor performance;
+		- Melhor segurança;
+
+	Desvantagens:
+		- Mais complexo de implementar.
