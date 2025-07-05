@@ -9,11 +9,9 @@
  *  FelipeTanusR <108429239+FelipeTanusR@users.noreply.github.com>
  */
 
-void foo();
-void bar();
+#include <stdio.h>
 
-int main()
+void bar()
 {
-  foo();
-  return 0;
+  printf ("Bar\n");
 }
