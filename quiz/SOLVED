@@ -167,20 +167,62 @@ encontrá-la: "[$ORIGIN]".
                 library should be used by many different programs running in
                 the same host.
 										"
-a)
-	-Vantagens:
+e)
+	a)
+		Estática:
+		-Vantagens: 
+			- Não existe dependência externa;
+			- Entrega (deployment) mais fácil.
 
-	-Desvantagens:
+		-Desvantagens:	
+			- Arquivos maiores;
+			- Dificuldade de dar update.
 
-b)
-	-Vantagens:
+        	Dinâmica:
+                -Vantagens:
+			- Executáveis menores;
+			- Bibliotecas podem receber updates a parte.
 
-	-Desvantagens:
+                -Desvantagens:  
+			- Necessidade de maior cuidado no versionamento das bibliotecas no sistema
+			alvo;
+			- Possíveis erros de Runtime.
 
-c)
-	-Vantagens:
-	
-	-Desvantagens:
+	b)
+		Estática:
+                -Vantagens:
+			- Executáveis já existentes não são afetados, o que pode evitar erros.
+
+                -Desvantagens:  
+			- Os programas precisam ser recompilados para receberem o update.
+
+        	Dinâmica:
+                -Vantagens:
+			- Facilidade nos updates.
+
+                -Desvantagens:
+			- Necessidade de tomar cuida com compatibilidade para versões anteriores.
+
+	c)
+		Estática:
+                -Vantagens:
+			- Cada programa tem apenas o código que precisa;
+			- Sem necessidade de compartilhar dependências durante o Runtime.
+
+                -Desvantagens:  
+			- Rendundância de código;
+			- Desperdício de recursos.
+
+        	Dinâmica:
+                -Vantagens:
+			- Economia de memória;
+			- Manutenção centralizada.		
+
+                -Desvantagens:
+			- Necessidade de maior cuidado com compatibilidade.
+
+
+
 
 *Exercício 05*
 
