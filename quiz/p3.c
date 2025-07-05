@@ -12,7 +12,7 @@
 #include <stdio.h>
 
 int foo();
-int bar();
+char bar();
 
 int main()
 {
@@ -27,9 +27,9 @@ int foo(int n)
   return a;
 }
 
-int bar(int m)
+char bar(int m)
 {
-  int b;
+  char b;
   b = m+1;
   return b;
 }

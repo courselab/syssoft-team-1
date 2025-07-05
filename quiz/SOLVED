@@ -78,6 +78,83 @@ senha certa, ele autoriza sua entreda, e ao tentar usar a senha errada, ele bloq
 p3
 
 
+Após "desassemblar" o programa,	foi possível perceber que o código gerado é extremamente similar ao
+fornecido de exemplo. Para fins	de simplicidade na explicação, vão ser utilizados os endereços de 
+memória do exemplo nas respostas.
+
+"
+	a) Locate the line where 'foo' calls 'bar' and explain how the
+                caller passes the parameter to the callee. In your answer,
+                clarify the concepts of calling convention and application
+                binary interface.
+										"
+ 
+
+a) Dado a complexidade de um sistema operacional, foi criadas "convenções de chamada", para 
+padronizar o processo de desenvolvimento de código de baixo nível. Para isso, foram criadas ABIs 
+(Interface Binária de Aplicação). Como paralelo, elas fazem para o assembly o que APIs fazem 
+para o "alto nível". Na prática, ABIs definem convenções de implementação para componentes 
+funcionais do sistema. Nessa linha, o código "desassemblado" também utiliza essas convenções
+para realizar a chamada e passagem de parâmetros da funções. A função "foo" chama a função
+"bar" na linha "80491af". Para realizar a passagem de parâmetros, a função "foo" utiliza 
+ o registrador volátil eax para armazenar n+1, e adiciona (push) ele na pilha.
+
+"
+	b) How 'bar' returns its result to 'foo'? How does the answer
+                relate to what you discussed in item (a)? Is it a linux-only
+                thing?
+										"
+
+
+b) A função "bar" retorna esse valor para "foo" na linha "80491ce", através da adição do resultado
+m+1 no registrador eax. Isso se relaciona com o item a, pois a ABI define que valores de retorno
+vão para o registrador eax. Não, isso não é exclusivo do linux.
+
+
+"
+	c) Explain what is the purpose of the first two instruction and
+                the second-to-last instruction of the function 'foo'. Give a
+                didactic overview of what they do and what would happen if
+                they were suppressed? Are they always necessary, or can they
+                be omitted in some circumstances?
+										"
+
+c) As primeiras duas instruções de foo são responsáveis por criar um ponto de referência
+para as variáveis locais, através da criação de um "stack frame" novo. a penúltima instrução
+volta o "stack frame" anterior. Caso essa etapa seja pulada, não seria possível manter um
+controle bom das variáveis locais. Elas podem ser emitidas em funções que finais (folhas), onde
+o código acaba.
+
+
+"
+	d) What is the purpose of the third line in both functions 'foo'
+                and 'bar' and what does it have to do with the x86 ABI? Does it
+                serve the same purpose than the third line of 'main'? Explain
+                didactically how those pieces of code work.
+										"
+
+
+d) A terceira linha nas funções "foo" e "bar" é responsável por alocar espaço para as 
+variáveis locais. Ela se relaciona com a ABI x86 por conta da forma como o stack funciona
+(de cima para baixo). A terceira linha da "main" é responsável por alinhar a pilha no 
+padrão 16 bytes, definido pela ABI x86.
+
+
+"
+	e) In the source code, change the return type of 'bar' to 'char'.
+                Rebuild p3 and examine the difference in the disassembly of
+                'foo'. Explain what the compiler did and, based on your answer,
+                discuss why the declaration of 'foo' and 'bar' before 'main'
+                are useful.
+										"
+
+e) A diferença principal está na linha "80491cb", onde ele utiliza o registrado al ao invés de
+eax. Isso acontece, pois al é padrão para retornos em char. A importância de declarar as funções
+"foo" e "bar" antes da "main", é a de garantir que o compilador vai usar as convenções de chamada e
+padrões de retorno corretos.
+
+
+
 
 *Exercício 04*
 
